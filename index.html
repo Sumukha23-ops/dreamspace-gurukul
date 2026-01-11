@@ -3,41 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Space Gurukul AI</title>
+    <title>Dream Space AI | Secure Portal</title>
     <style>
         body { 
-            background-color: #0a0a0a; color: #D4AF37; 
+            background-color: #050505; color: #D4AF37; 
             font-family: 'Courier New', Courier, monospace;
             display: flex; justify-content: center; align-items: center; 
             height: 100vh; margin: 0; overflow: hidden;
         }
-        .terminal {
-            width: 80%; max-width: 600px;
-            padding: 20px; border: 1px solid #D4AF37;
-            background: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        #login-screen { text-align: center; z-index: 100; transition: 0.5s; }
+        .terminal-box {
+            border: 1px solid #D4AF37; padding: 40px;
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
         }
-        .line { margin-bottom: 10px; opacity: 0; animation: fadeIn 0.5s forwards; }
-        .line:nth-child(1) { animation-delay: 0.5s; }
-        .line:nth-child(2) { animation-delay: 1.5s; }
-        .line:nth-child(3) { animation-delay: 2.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+        input {
+            background: transparent; border: none; border-bottom: 2px solid #D4AF37;
+            color: #D4AF37; padding: 10px; font-size: 1.2rem; text-align: center;
+            outline: none; margin-top: 20px; width: 100%;
+        }
         .btn {
-            display: inline-block; margin-top: 20px;
-            padding: 10px 20px; color: #000; background: #D4AF37;
-            text-decoration: none; font-weight: bold; text-transform: uppercase;
-            cursor: pointer; opacity: 0; animation: fadeIn 0.5s forwards; animation-delay: 3.5s;
+            margin-top: 30px; padding: 10px 30px; border: 1px solid #D4AF37;
+            color: #D4AF37; text-decoration: none; display: inline-block;
+            cursor: pointer; transition: 0.3s;
         }
+        .btn:hover { background: #D4AF37; color: #000; box-shadow: 0 0 15px #D4AF37; }
+        #ai-content { display: none; text-align: center; }
+        .glitch { font-size: 1.5rem; letter-spacing: 5px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<div class="terminal">
-    <div class="line">> INITIALIZING DREAM SPACE GURUKUL...</div>
-    <div class="line">> LOADING NEURAL REASONING ENGINE...</div>
-    <div class="line">> ACCESS GRANTED: SUMUKHA23-OPS</div>
-    <a href="https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk" class="btn">Enter Neural Link</a>
-</div>
+    <div id="login-screen">
+        <div class="terminal-box">
+            <div class="glitch">DREAM SPACE SECURITY</div>
+            <p style="color: #666; font-size: 0.8rem;">IDENTITY VERIFICATION REQUIRED</p>
+            <input type="password" id="passInput" placeholder="ENTER ACCESS CODE">
+            <br>
+            <div class="btn" onclick="checkPass()">INITIALIZE LINK</div>
+        </div>
+    </div>
 
+    <div id="ai-content">
+        <div class="terminal-box">
+            <h1 style="letter-spacing: 8px;">ACCESS GRANTED</h1>
+            <p>> Loading Neural Reasoning Engine...</p>
+            <p>> Welcome, Sumukha S.</p>
+            <a href="https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk" class="btn">ENTER NEURAL CORE</a>
+        </div>
+    </div>
+
+    <script>
+        function checkPass() {
+            const input = document.getElementById("passInput").value;
+            const secret = "Dreamspace3036"; // YOUR PASSWORD
+            
+            if (input === secret) {
+                document.getElementById("login-screen").style.display = "none";
+                document.getElementById("ai-content").style.display = "block";
+            } else {
+                alert("ACCESS DENIED: INVALID SIGNATURE");
+                document.getElementById("passInput").value = "";
+            }
+        }
+
+        // Allow pressing "Enter" key to login
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkPass();
+            }
+        });
+    </script>
 </body>
 </html>
