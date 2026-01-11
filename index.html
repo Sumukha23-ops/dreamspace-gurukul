@@ -2,26 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Space Gurukul AI</title>
     <meta name="description" content="Official portal for Dream Space Gurukul AI. Access the Supreme Neural Reasoning Engine.">
-    <meta name="keywords" content="Dream Space Gurukul, sumukha23-ops, AI Studio, Gurukul AI">
     
-    <meta http-equiv="refresh" content="0; url=https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk">
-
     <style>
-        body { background-color: #050505; color: #D4AF37; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; }
-        .loader { border: 4px solid #1a1a1a; border-top: 4px solid #D4AF37; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        h1 { letter-spacing: 2px; text-transform: uppercase; }
-        a { color: #F5A623; text-decoration: none; font-weight: bold; }
+        /* This makes the page look like a dark, high-tech lab */
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%; 
+            background-color: #050505; overflow: hidden; font-family: sans-serif;
+        }
+        
+        /* The container for your AI */
+        .app-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        iframe {
+            width: 100%; height: 100%;
+            border: none;
+        }
+
+        /* TOP BAR MASK: This hides the "Edit/Instructions" buttons at the top of AI Studio */
+        .mask-bar {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 60px;
+            background: #050505;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            border-bottom: 1px solid #D4AF37;
+            color: #D4AF37;
+            font-weight: bold;
+            letter-spacing: 2px;
+            pointer-events: none; /* Allows you to still click things under it if needed */
+        }
     </style>
 </head>
 <body>
-    <div>
-        <div class="loader"></div>
-        <h1>DREAM SPACE GURUKUL</h1>
-        <p>Connecting to Supreme Neural Reasoning Engine...</p>
-        <p><a href="https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk">Click here if not redirected automatically</a></p>
+
+    <div class="mask-bar">
+        DREAM SPACE GURUKUL | NEURAL LINK ACTIVE
     </div>
+
+    <div class="app-container">
+        <iframe src="https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk"></iframe>
+    </div>
+
 </body>
 </html>
