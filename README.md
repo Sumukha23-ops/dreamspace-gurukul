@@ -1,17 +1,21 @@
 # 🏛️ Dream Space Gurukul AI
 
-Welcome to the official portal for **Dream Space Gurukul**. 
+Welcome to the official repository for **Dream Space Gurukul**. 
 
-This system is powered by the **Supreme Neural Reasoning Engine**, an advanced AI environment designed for high-level logic and learning.
+This repository hosts the **Supreme Neural Reasoning Engine** portal. Unlike standard AI links, this portal provides a dedicated, immersive interface for interacting with our advanced neural logic systems.
 
-## 🚀 Access Point
-Access the live AI interface here:
-[https://sumukha23-ops.github.io/dreamspace-gurukul/](https://sumukha23-ops.github.io/dreamspace-gurukul/)
+## 🌐 Official Portal
+The AI is active and accessible via the following link:
+**[https://sumukha23-ops.github.io/dreamspace-gurukul/](https://sumukha23-ops.github.io/dreamspace-gurukul/)**
 
-*Note: This link provides a secure preview. Users cannot modify the core engine settings.*
+## 🛠️ System Specifications
+- **Core Engine:** Gemini Neural Framework
+- **Architecture:** Managed Iframe Portal
+- **Security:** Public-facing preview (System instructions encrypted)
+- **Developer:** sumukha23-ops
 
-## 🔍 Metadata
-- **System Name:** Dream Space Gurukul
-- **Architect:** sumukha23-ops
-- **Status:** Operational
-- **Keywords:** Dream Space Gurukul, AI Studio, Neural Reasoning, sumukha23-ops.
+## 🔍 Why access through this link?
+Using the official portal ensures you are connected to the most stable version of the **Dream Space Gurukul** environment. It provides a clean, focused interface designed for reasoning and learning without the distractions of the editor.
+
+---
+© 2026 Dream Space Gurukul. Dedicated to the evolution of intelligence.
