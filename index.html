@@ -8,100 +8,106 @@
         :root { --neon: #00f2ff; --gold: #D4AF37; --bg: #050505; }
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; }
         
-        .nebula {
+        /* High-Tech Background Overlay */
+        .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #001a1a 0%, #000 100%);
             z-index: -1;
         }
 
-        .container {
+        .main-ui {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; text-align: center; padding: 20px;
+            height: 100vh; text-align: center;
         }
 
-        /* ROUND IMAGE FRAME */
-        .profile-frame {
-            width: 200px; height: 200px;
+        /* ROUND IMAGE OF SUMUKHA */
+        .identity-hex {
+            width: 180px; height: 180px;
             border-radius: 50%;
             border: 4px solid var(--neon);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
-            overflow: hidden; margin-bottom: 25px;
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.4);
+            overflow: hidden; margin-bottom: 20px;
             background: #111;
+            position: relative;
         }
-        /* Pointing to .jpg as seen in your upload */
-        .profile-frame img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* This looks for your uploaded file "My AI.png" */
+        .identity-hex img { width: 100%; height: 100%; object-fit: cover; }
 
-        .bio { max-width: 600px; margin-bottom: 40px; }
-        .bio h1 { font-size: 2.8rem; letter-spacing: 7px; color: var(--neon); margin: 0; text-transform: uppercase; text-shadow: 0 0 10px var(--neon); }
-        .bio h2 { font-size: 1.2rem; color: var(--gold); letter-spacing: 3px; margin-top: 10px; }
-        .bio p { color: #ccc; font-size: 1rem; line-height: 1.6; margin-top: 20px; letter-spacing: 1px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
+        .info-panel { max-width: 700px; margin-bottom: 30px; }
+        .info-panel h1 { font-size: 3rem; letter-spacing: 10px; color: var(--neon); margin: 0; text-transform: uppercase; font-weight: 300; }
+        .info-panel h2 { font-size: 1.2rem; color: var(--gold); letter-spacing: 4px; margin-top: 5px; }
+        .description { color: #888; font-size: 0.95rem; margin-top: 20px; line-height: 1.6; letter-spacing: 1px; }
 
-        .portal-btn {
-            padding: 18px 50px; background: transparent; 
-            border: 2px solid var(--gold); color: var(--gold);
-            font-weight: bold; cursor: pointer; letter-spacing: 4px;
-            transition: 0.5s; text-transform: uppercase; font-size: 1rem;
+        /* Dashboard Buttons */
+        .btn-group { display: flex; gap: 20px; margin-top: 30px; }
+        .cyber-btn {
+            padding: 15px 40px; background: transparent; 
+            border: 1px solid var(--gold); color: var(--gold);
+            font-weight: bold; cursor: pointer; letter-spacing: 3px;
+            transition: 0.4s; text-transform: uppercase;
         }
-        .portal-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 40px var(--gold); transform: scale(1.05); }
+        .cyber-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
 
-        /* SECURITY MODAL */
+        /* SECURITY LOCK SCREEN */
         #lock-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 1000;
+            background: rgba(0,0,0,0.95); z-index: 1000;
             flex-direction: column; align-items: center; justify-content: center;
         }
-        .lock-box { border: 2px solid var(--gold); padding: 50px; background: #000; text-align: center; box-shadow: 0 0 50px rgba(212, 175, 55, 0.2); }
+        .lock-card { border: 1px solid var(--gold); padding: 50px; background: #000; text-align: center; }
         input {
-            background: transparent; border: none; border-bottom: 3px solid var(--gold);
-            color: var(--gold); padding: 15px; font-size: 1.3rem; text-align: center; outline: none;
-            width: 300px; margin-bottom: 30px; letter-spacing: 2px;
+            background: transparent; border: none; border-bottom: 2px solid var(--gold);
+            color: var(--gold); padding: 15px; font-size: 1.5rem; text-align: center; outline: none;
+            width: 320px; margin-bottom: 30px; letter-spacing: 5px;
         }
     </style>
 </head>
 <body>
 
-<div class="nebula"></div>
+<div class="overlay"></div>
 
-<div class="container">
-    <div class="profile-frame">
-        <img src="My AI.jpg" alt="Sumukha S.">
+<div class="main-ui">
+    <div class="identity-hex">
+        <img src="My%20AI.png" alt="Sumukha S.">
     </div>
 
-    <div class="bio">
-        <h1>Sumukha S.</h1>
-        <h2>Visionary AI Architect</h2>
-        <p>
-            I am a student of <strong>7th Class</strong> at <strong>Shree Swaminarayan Gurukul</strong>. 
-            I am dedicated to building the next generation of intelligent systems and 3D neural environments. 
-            This is my primary command interface.
-        </p>
+    <div class="info-panel">
+        <h1>SUMUKHA S.</h1>
+        <h2>SHREE SWAMINARAYAN GURUKUL</h2>
+        <div class="description">
+            I am a student of <strong>7th Class</strong>. I am the architect of the Dream Space Neural Engine. 
+            This portal is the gateway to advanced reasoning, 3D architecture, and robotics integration.
+        </div>
     </div>
 
-    <button class="portal-btn" onclick="openLock()">Initialize My AI</button>
+    <div class="btn-group">
+        <button class="cyber-btn" onclick="openVault()">MY AI</button>
+    </div>
 </div>
 
 <div id="lock-screen">
-    <div class="lock-box">
-        <h3 style="color: var(--gold); letter-spacing: 5px; margin-bottom: 5px;">PROTOCOL: SECURE VAULT</h3>
-        <p style="color: #666; font-size: 0.8rem; margin-bottom: 30px;">IDENTITY VERIFICATION REQUIRED</p>
-        <input type="password" id="passInput" placeholder="ENTER NEURAL CODE">
+    <div class="lock-card">
+        <h2 style="color: var(--gold); letter-spacing: 6px; margin-bottom: 10px;">NEURAL ACCESS REQUIRED</h2>
+        <p style="color: #444; margin-bottom: 30px;">AUTHORIZATION LEVEL: SUMUKHA_OFFICIAL</p>
+        <input type="password" id="passInput" placeholder="ACCESS CODE">
         <br>
-        <button class="portal-btn" style="font-size: 0.8rem; padding: 10px 30px;" onclick="validate()">Unlock AI</button>
-        <p onclick="closeLock()" style="color: #444; margin-top: 20px; cursor: pointer; font-size: 0.8rem;">ABORT ACCESS</p>
+        <button class="cyber-btn" style="font-size: 0.8rem;" onclick="validate()">Initialize Link</button>
+        <p onclick="closeVault()" style="color: #333; cursor: pointer; margin-top: 20px;">ABORT</p>
     </div>
 </div>
 
 <script>
-    function openLock() { document.getElementById('lock-screen').style.display = 'flex'; }
-    function closeLock() { document.getElementById('lock-screen').style.display = 'none'; }
+    function openVault() { document.getElementById('lock-screen').style.display = 'flex'; }
+    function closeVault() { document.getElementById('lock-screen').style.display = 'none'; }
     
     function validate() {
         const pass = document.getElementById('passInput').value;
+        // Correct Password: DreamSpaceSumukha3036
         if (pass === "DreamSpaceSumukha3036") {
-            // Your AI Studio Link
             window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
         } else {
-            alert("BIOMETRIC MISMATCH. ACCESS DENIED.");
+            alert("SECURITY VIOLATION: INVALID CODE");
             document.getElementById('passInput').value = "";
         }
     }
