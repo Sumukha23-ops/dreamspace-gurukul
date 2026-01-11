@@ -3,35 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Dream Space Gurukul AI</title>
-    <meta name="description" content="Official portal for Dream Space Gurukul AI. Access the Supreme Neural Reasoning Engine.">
-    <meta name="keywords" content="Dream Space Gurukul, sumukha23-ops, AI, Gurukul">
-
-    <meta http-equiv="refresh" content="2; url=https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk">
-
     <style>
         body { 
             background-color: #050505; color: #D4AF37; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex; justify-content: center; align-items: center; 
-            height: 100vh; margin: 0; text-align: center; 
+            height: 100vh; margin: 0; text-align: center;
         }
-        .container { border: 1px solid #D4AF37; padding: 40px; border-radius: 10px; background: #0a0a0a; }
-        .loader { border: 3px solid #1a1a1a; border-top: 3px solid #D4AF37; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        h1 { font-size: 1.5rem; letter-spacing: 3px; margin: 10px 0; }
-        p { color: #888; font-size: 0.9rem; }
-        a { color: #F5A623; text-decoration: none; font-size: 0.8rem; margin-top: 20px; display: block; }
+        .portal-box {
+            border: 1px solid #D4AF37;
+            padding: 50px;
+            background: rgba(10, 10, 10, 0.9);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+        }
+        h1 { letter-spacing: 5px; font-weight: 300; margin-bottom: 10px; }
+        .status { color: #00FF41; font-family: monospace; font-size: 0.8rem; margin-bottom: 30px; }
+        .enter-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .enter-btn:hover {
+            background: #D4AF37;
+            color: #000;
+            box-shadow: 0 0 15px #D4AF37;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="loader"></div>
+    <div class="portal-box">
         <h1>DREAM SPACE GURUKUL</h1>
-        <p>Initializing Supreme Neural Link...</p>
-        <a href="https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk">Manual Entry</a>
+        <div class="status">● SYSTEM_READY: NEURAL_ENGINE_ONLINE</div>
+        <p style="color: #888; margin-bottom: 30px;">Authorized Access Only</p>
+        
+        <a href="https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk" class="enter-btn">Initialize Link</a>
     </div>
 
 </body>
