@@ -5,110 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Space AI | Sumukha S. Official</title>
     <style>
-        :root { --neon: #00f2ff; --gold: #D4AF37; --bg: #050505; }
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; }
-        
-        /* High-Tech Background Overlay */
-        .overlay {
+        :root {
+            --neon: #00f2ff;
+            --gold: #D4AF37;
+            --dark-glow: rgba(0, 242, 255, 0.1);
+            --bg-deep: #020202;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            height: 100%;
+            background-color: var(--bg-deep);
+            color: #ffffff;
+            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* DIGITAL NEBULA BACKGROUND */
+        .neural-net {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #001a1a 0%, #000 100%);
+            background: 
+                radial-gradient(circle at 20% 30%, #001a1a 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #1a1400 0%, transparent 40%);
             z-index: -1;
         }
 
-        .main-ui {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; text-align: center;
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 20px;
+            text-align: center;
         }
 
-        /* ROUND IMAGE OF SUMUKHA */
-        .identity-hex {
-            width: 180px; height: 180px;
-            border-radius: 50%;
-            border: 4px solid var(--neon);
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.4);
-            overflow: hidden; margin-bottom: 20px;
-            background: #111;
+        /* FUTURISTIC HEADER */
+        .main-title {
+            font-size: 3.5rem;
+            letter-spacing: 15px;
+            color: var(--neon);
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--neon);
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .sub-title {
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 5px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+        }
+
+        /* NEURAL DESCRIPTION BLOCK */
+        .bio-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--neon);
+            border-right: 3px solid var(--gold);
+            padding: 40px;
+            margin-bottom: 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .bio-section h3 {
+            color: var(--neon);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .bio-text {
+            color: #cccccc;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        /* SPECIFICATION GRID */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .spec-item {
+            padding: 20px;
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .spec-item:hover {
+            border-color: var(--neon);
+            background: var(--dark-glow);
+        }
+
+        .spec-label { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; display: block; margin-bottom: 5px; }
+        .spec-value { font-size: 1rem; color: #fff; }
+
+        /* THE GATEWAY BUTTON */
+        .portal-trigger {
+            padding: 25px 80px;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            cursor: pointer;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
             position: relative;
+            overflow: hidden;
         }
-        
-        /* This looks for your uploaded file "My AI.png" */
-        .identity-hex img { width: 100%; height: 100%; object-fit: cover; }
 
-        .info-panel { max-width: 700px; margin-bottom: 30px; }
-        .info-panel h1 { font-size: 3rem; letter-spacing: 10px; color: var(--neon); margin: 0; text-transform: uppercase; font-weight: 300; }
-        .info-panel h2 { font-size: 1.2rem; color: var(--gold); letter-spacing: 4px; margin-top: 5px; }
-        .description { color: #888; font-size: 0.95rem; margin-top: 20px; line-height: 1.6; letter-spacing: 1px; }
-
-        /* Dashboard Buttons */
-        .btn-group { display: flex; gap: 20px; margin-top: 30px; }
-        .cyber-btn {
-            padding: 15px 40px; background: transparent; 
-            border: 1px solid var(--gold); color: var(--gold);
-            font-weight: bold; cursor: pointer; letter-spacing: 3px;
-            transition: 0.4s; text-transform: uppercase;
+        .portal-trigger:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 50px var(--gold);
+            transform: translateY(-5px);
         }
-        .cyber-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
 
-        /* SECURITY LOCK SCREEN */
-        #lock-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 1000;
-            flex-direction: column; align-items: center; justify-content: center;
+        /* SECURITY OVERLAY */
+        #auth-modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .lock-card { border: 1px solid var(--gold); padding: 50px; background: #000; text-align: center; }
-        input {
-            background: transparent; border: none; border-bottom: 2px solid var(--gold);
-            color: var(--gold); padding: 15px; font-size: 1.5rem; text-align: center; outline: none;
-            width: 320px; margin-bottom: 30px; letter-spacing: 5px;
+
+        .auth-terminal {
+            width: 400px;
+            padding: 50px;
+            border: 1px solid var(--gold);
+            background: #000;
+            text-align: center;
+        }
+
+        .auth-terminal input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            outline: none;
+            margin-bottom: 40px;
+            letter-spacing: 10px;
+        }
+
+        .footer-note {
+            margin-top: 100px;
+            color: #444;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="overlay"></div>
+<div class="neural-net"></div>
 
-<div class="main-ui">
-    <div class="identity-hex">
-        <img src="My%20AI.png" alt="Sumukha S.">
+<div class="container">
+    <header>
+        <h1 class="main-title">DREAM SPACE AI</h1>
+        <div class="sub-title">Neural Architecture v12.0</div>
+    </header>
+
+    <div class="bio-section">
+        <h3>ARCHITECT PROFILE: SUMUKHA S.</h3>
+        <p class="bio-text">
+            I am a specialized developer currently pursuing my education in the <strong>Seventh Class</strong> at <strong>Shree Swaminarayan Gurukul</strong>. 
+            My mission is to merge ancient wisdom with futuristic technology. 
+            The <strong>Dream Space AI</strong> is my premier reasoning engine, designed to provide high-fidelity solutions across Robotics, Drone Engineering, and Complex Mathematics. 
+            By accessing this portal, you are entering a secure neural environment optimized for world-class performance.
+        </p>
     </div>
 
-    <div class="info-panel">
-        <h1>SUMUKHA S.</h1>
-        <h2>SHREE SWAMINARAYAN GURUKUL</h2>
-        <div class="description">
-            I am a student of <strong>7th Class</strong>. I am the architect of the Dream Space Neural Engine. 
-            This portal is the gateway to advanced reasoning, 3D architecture, and robotics integration.
+    <div class="specs-grid">
+        <div class="spec-item">
+            <span class="spec-label">CREATOR</span>
+            <span class="spec-value">SUMUKHA S.</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-label">INSTITUTION</span>
+            <span class="spec-value">S.S. GURUKUL</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-label">CORE ENGINE</span>
+            <span class="spec-value">GEMINI 3 FLASH</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-label">ENCRYPTION</span>
+            <span class="spec-value">256-BIT NEURAL</span>
         </div>
     </div>
 
-    <div class="btn-group">
-        <button class="cyber-btn" onclick="openVault()">MY AI</button>
+    <button class="portal-trigger" onclick="openTerminal()">Initialize My AI</button>
+
+    <div class="footer-note">
+        ESTABLISHED 2026 | ALL NEURAL PROTOCOLS ACTIVE
     </div>
 </div>
 
-<div id="lock-screen">
-    <div class="lock-card">
-        <h2 style="color: var(--gold); letter-spacing: 6px; margin-bottom: 10px;">NEURAL ACCESS REQUIRED</h2>
-        <p style="color: #444; margin-bottom: 30px;">AUTHORIZATION LEVEL: SUMUKHA_OFFICIAL</p>
-        <input type="password" id="passInput" placeholder="ACCESS CODE">
+<div id="auth-modal">
+    <div class="auth-terminal">
+        <h2 style="color: var(--gold); letter-spacing: 5px; margin-bottom: 10px;">SECURITY LOCK</h2>
+        <p style="color: #666; font-size: 0.7rem; margin-bottom: 40px;">ENTER BIOMETRIC PASSCODE</p>
+        <input type="password" id="authCode" placeholder="••••••••">
         <br>
-        <button class="cyber-btn" style="font-size: 0.8rem;" onclick="validate()">Initialize Link</button>
-        <p onclick="closeVault()" style="color: #333; cursor: pointer; margin-top: 20px;">ABORT</p>
+        <button class="portal-trigger" style="font-size: 0.8rem; padding: 10px 30px;" onclick="verify()">AUTHORIZE</button>
+        <p style="color: #333; margin-top: 20px; cursor: pointer;" onclick="closeTerminal()">TERMINATE ACCESS</p>
     </div>
 </div>
 
 <script>
-    function openVault() { document.getElementById('lock-screen').style.display = 'flex'; }
-    function closeVault() { document.getElementById('lock-screen').style.display = 'none'; }
-    
-    function validate() {
-        const pass = document.getElementById('passInput').value;
-        // Correct Password: DreamSpaceSumukha3036
-        if (pass === "DreamSpaceSumukha3036") {
+    function openTerminal() {
+        document.getElementById('auth-modal').style.display = 'flex';
+    }
+
+    function closeTerminal() {
+        document.getElementById('auth-modal').style.display = 'none';
+    }
+
+    function verify() {
+        const input = document.getElementById('authCode').value;
+        // The Password you requested: DreamSpaceSumukha3036
+        if (input === "DreamSpaceSumukha3036") {
             window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
         } else {
-            alert("SECURITY VIOLATION: INVALID CODE");
-            document.getElementById('passInput').value = "";
+            alert("ACCESS DENIED: IDENTITY UNKNOWN");
+            document.getElementById('authCode').value = "";
         }
     }
 </script>
