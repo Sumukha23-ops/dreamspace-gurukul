@@ -3,221 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Space AI | Sumukha S. Official</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>Dream Space AI | Sumukha S.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon: #00f2ff;
-            --gold: #D4AF37;
-            --bg: #000000;
-            --glass: rgba(0, 242, 255, 0.03);
+        /* BASE STYLES */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #000; color: #00f2ff;
+            font-family: 'Orbitron', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-        body, html { 
-            height: 100%; background: var(--bg); color: white; 
-            font-family: 'JetBrains Mono', monospace; overflow: hidden; 
+        /* NEON BACKGROUND EFFECT */
+        .bg-glow {
+            position: fixed; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #001a1a 0%, #000 80%);
+            z-index: -1;
         }
 
-        /* STARFIELD BACKGROUND */
-        #stars-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-
-        /* BOOT INTERFACE */
-        #boot-layer {
-            position: fixed; inset: 0; background: black; z-index: 5000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        /* MAIN TERMINAL WINDOW */
+        .terminal {
+            border: 2px solid #00f2ff;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 50px; text-align: center;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+            max-width: 600px; width: 90%;
+            position: relative;
         }
 
-        .boot-btn {
-            background: transparent; border: 1px solid var(--neon); color: var(--neon);
-            padding: 20px 60px; font-family: 'Orbitron'; letter-spacing: 5px;
-            cursor: pointer; transition: 0.5s; font-weight: bold;
-        }
-        .boot-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 50px var(--neon); }
-
-        /* MAIN DASHBOARD */
-        .container {
-            display: flex; align-items: center; justify-content: center;
-            height: 100vh; opacity: 0; transition: 2s ease-in;
-        }
-
-        .hud-frame {
-            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.2);
-            backdrop-filter: blur(15px); padding: 60px; border-radius: 5px;
-            max-width: 850px; position: relative; transform-style: preserve-3d;
-            box-shadow: 0 0 100px rgba(0,0,0,1);
-        }
-
-        .hud-frame::before {
-            content: "CONNECTED_TO_GURUKUL_CORE"; position: absolute; top: -10px; right: 20px;
-            background: black; color: var(--gold); font-size: 0.6rem; padding: 0 10px;
-        }
-
-        .title {
-            font-family: 'Orbitron'; font-size: 4rem; letter-spacing: 15px;
-            color: var(--neon); text-shadow: 0 0 20px var(--neon); margin-bottom: 10px;
-        }
-
-        .identity {
-            font-size: 1.1rem; color: var(--gold); letter-spacing: 5px;
-            margin-bottom: 30px; border-bottom: 1px solid var(--gold);
-            display: inline-block; padding-bottom: 10px;
-        }
-
-        #system-log {
-            font-size: 0.8rem; color: #555; text-align: left; height: 120px;
-            overflow: hidden; line-height: 1.6; margin-bottom: 30px;
-            border-left: 2px solid #111; padding-left: 20px;
-        }
+        h1 { font-size: 2.5rem; letter-spacing: 8px; margin-bottom: 10px; text-transform: uppercase; }
+        .author { color: #D4AF37; font-size: 0.9rem; letter-spacing: 4px; margin-bottom: 30px; }
+        
+        .bio { color: #888; font-size: 0.8rem; line-height: 1.6; margin-bottom: 40px; }
 
         /* BUTTONS */
-        .action-btn {
-            background: transparent; border: 1px solid var(--gold); color: var(--gold);
-            padding: 15px 40px; font-family: 'Orbitron'; letter-spacing: 5px;
-            cursor: pointer; transition: 0.3s;
+        .btn {
+            background: transparent; border: 1px solid #D4AF37; color: #D4AF37;
+            padding: 15px 40px; cursor: pointer; font-family: 'Orbitron';
+            letter-spacing: 3px; transition: 0.3s;
         }
-        .action-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
+        .btn:hover { background: #D4AF37; color: #000; box-shadow: 0 0 20px #D4AF37; }
 
-        /* VAULT MODAL */
+        /* HIDDEN PASSWORD MODAL */
         #vault {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            z-index: 6000; align-items: center; justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 10; flex-direction: column; align-items: center; justify-content: center;
         }
-        .lock-box { border: 1px solid var(--neon); padding: 50px; background: black; text-align: center; }
+
         input {
-            background: transparent; border: none; border-bottom: 2px solid var(--neon);
-            color: var(--neon); width: 100%; padding: 10px; text-align: center;
-            font-size: 1.5rem; outline: none; margin-bottom: 30px; letter-spacing: 5px;
+            background: transparent; border: none; border-bottom: 2px solid #00f2ff;
+            color: #00f2ff; padding: 10px; font-size: 1.5rem; text-align: center;
+            outline: none; margin-bottom: 30px; width: 280px; font-family: 'Courier New';
         }
     </style>
 </head>
 <body>
 
-<canvas id="stars-canvas"></canvas>
+    <div class="bg-glow"></div>
 
-<div id="boot-layer">
-    <div style="color: white; font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 20px;">SYSTEM STATUS: STANDBY</div>
-    <button class="boot-btn" onclick="initializeOS()">BOOT DREAM SPACE</button>
-</div>
-
-<div class="container" id="main-ui">
-    <div class="hud-frame" id="hud">
-        <h1 class="title">DREAM SPACE</h1>
-        <div class="identity">CREATOR: SUMUKHA S.</div>
+    <div class="terminal">
+        <h1>Dream Space</h1>
+        <div class="author">Architect: Sumukha S.</div>
         
-        <div id="system-log"></div>
-
-        <div style="margin-top: 20px;">
-            <button class="action-btn" onclick="openVault()">ACCESS MY AI</button>
+        <div class="bio">
+            [7th Class Student | Shree Swaminarayan Gurukul]<br><br>
+            Initializing AI reasoning protocols. Welcome to the official control center for Dream Space neural engineering.
         </div>
 
-        <p style="margin-top: 40px; color: #333; font-size: 0.7rem; text-align: left;">
-            PROFILE: 7th Class Student at Shree Swaminarayan Gurukul. <br>
-            Objective: Neural Engineering & AI Architecture.
-        </p>
+        <button class="btn" onclick="openVault()">ACCESS MY AI</button>
     </div>
-</div>
 
-<div id="vault">
-    <div class="lock-box">
-        <h2 style="color:var(--neon); letter-spacing:5px; margin-bottom:30px;">IDENTITY CHECK</h2>
-        <input type="password" id="passCode" placeholder="••••••••">
+    <div id="vault">
+        <h2 style="letter-spacing: 5px; margin-bottom: 30px;">SECURITY KEY</h2>
+        <input type="password" id="passInput" placeholder="••••••••">
         <br>
-        <button class="action-btn" onclick="verify()">AUTHORIZE</button>
-        <p onclick="closeVault()" style="color:#333; margin-top:30px; cursor:pointer; font-size:0.7rem;">TERMINATE</p>
+        <button class="btn" style="border-color: #00f2ff; color: #00f2ff;" onclick="verify()">AUTHORIZE</button>
+        <p onclick="closeVault()" style="color: #333; margin-top: 20px; cursor: pointer; font-size: 0.7rem;">CANCEL</p>
     </div>
-</div>
 
-<script>
-    const logLines = [
-        "> Booting DreamSpace_Kernel_7.0...",
-        "> Syncing with S.S. Gurukul Educational Core...",
-        "> User identified: Sumukha S.",
-        "> Loading Gemini 3 Vision Protocols...",
-        "> 3D Neural Environment: READY",
-        "> Security Wall: ACTIVE",
-        "> Welcome back, Architect."
-    ];
-
-    let audioCtx;
-    
-    function initializeOS() {
-        // Create Neural Sound (Synthesized Hum)
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.type = 'sawtooth';
-        oscillator.frequency.setValueAtTime(40, audioCtx.currentTime); 
-        gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.start();
-
-        // Reveal UI
-        document.getElementById('boot-layer').style.display = 'none';
-        document.getElementById('main-ui').style.opacity = '1';
-        
-        // Start System Log
-        let i = 0;
-        const log = document.getElementById('system-log');
-        const interval = setInterval(() => {
-            if(i < logLines.length) {
-                log.innerHTML += logLines[i] + "<br>";
-                i++;
-            } else { clearInterval(interval); }
-        }, 800);
-    }
-
-    // STARFIELD ENGINE
-    const canvas = document.getElementById('stars-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    let stars = [];
-
-    for(let i=0; i<150; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() * 1.5,
-            v: Math.random() * 0.5
-        });
-    }
-
-    function drawStars() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(0, 242, 255, 0.5)";
-        stars.forEach(s => {
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
-            ctx.fill();
-            s.y -= s.v;
-            if(s.y < 0) s.y = canvas.height;
-        });
-        requestAnimationFrame(drawStars);
-    }
-    drawStars();
-
-    // 3D TILT
-    const hud = document.getElementById('hud');
-    document.addEventListener('mousemove', (e) => {
-        const x = (window.innerWidth / 2 - e.pageX) / 35;
-        const y = (window.innerHeight / 2 - e.pageY) / 35;
-        hud.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-    });
-
-    // SECURITY
-    function openVault() { document.getElementById('vault').style.display = 'flex'; }
-    function closeVault() { document.getElementById('vault').style.display = 'none'; }
-    function verify() {
-        const input = document.getElementById('passCode').value;
-        if (input === "DreamSpaceSumukha3036") {
-            window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
-        } else {
-            alert("ACCESS DENIED: KEY INCORRECT");
+    <script>
+        // Simple and robust scripts to avoid blank screens
+        function openVault() {
+            document.getElementById('vault').style.display = 'flex';
         }
-    }
-</script>
 
+        function closeVault() {
+            document.getElementById('vault').style.display = 'none';
+        }
+
+        function verify() {
+            const input = document.getElementById('passInput').value;
+            // The password you requested
+            if (input === "DreamSpaceSumukha3036") {
+                window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
+            } else {
+                alert("ACCESS DENIED");
+                document.getElementById('passInput').value = "";
+            }
+        }
+
+        // Allow 'Enter' key to submit
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                verify();
+            }
+        });
+    </script>
 </body>
 </html>
