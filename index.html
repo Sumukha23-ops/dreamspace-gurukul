@@ -4,83 +4,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dream Space AI | Sumukha S. Official</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@200;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #00f2ff;
             --gold: #D4AF37;
-            --bg: #010101;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(0, 242, 255, 0.2);
+            --bg: #000000;
+            --glass: rgba(0, 242, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-        body, html { height: 100%; background: var(--bg); color: white; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-
-        /* INTRO OVERLAY */
-        #boot-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 2000; display: flex; 
-            flex-direction: column; align-items: center; justify-content: center;
+        body, html { 
+            height: 100%; background: var(--bg); color: white; 
+            font-family: 'JetBrains Mono', monospace; overflow: hidden; 
         }
 
-        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 20%, black 100%); pointer-events: none; }
+        /* STARFIELD BACKGROUND */
+        #stars-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
-        .container { 
+        /* BOOT INTERFACE */
+        #boot-layer {
+            position: fixed; inset: 0; background: black; z-index: 5000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; padding: 40px; text-align: center; opacity: 0; transition: 2s;
+        }
+
+        .boot-btn {
+            background: transparent; border: 1px solid var(--neon); color: var(--neon);
+            padding: 20px 60px; font-family: 'Orbitron'; letter-spacing: 5px;
+            cursor: pointer; transition: 0.5s; font-weight: bold;
+        }
+        .boot-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 50px var(--neon); }
+
+        /* MAIN DASHBOARD */
+        .container {
+            display: flex; align-items: center; justify-content: center;
+            height: 100vh; opacity: 0; transition: 2s ease-in;
         }
 
         .hud-frame {
-            background: var(--glass); border: 1px solid var(--border);
-            backdrop-filter: blur(20px); padding: 50px; border-radius: 2px;
-            position: relative; max-width: 800px; transform-style: preserve-3d;
-            perspective: 1000px; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.2);
+            backdrop-filter: blur(15px); padding: 60px; border-radius: 5px;
+            max-width: 850px; position: relative; transform-style: preserve-3d;
+            box-shadow: 0 0 100px rgba(0,0,0,1);
         }
 
-        .glitch-title {
-            font-family: 'Orbitron', sans-serif; font-size: 3.5rem; font-weight: 900; 
-            letter-spacing: 12px; color: var(--neon); text-transform: uppercase;
-            position: relative; margin-bottom: 10px;
+        .hud-frame::before {
+            content: "CONNECTED_TO_GURUKUL_CORE"; position: absolute; top: -10px; right: 20px;
+            background: black; color: var(--gold); font-size: 0.6rem; padding: 0 10px;
         }
 
-        .sumukha-identity {
-            font-size: 1rem; color: var(--gold); letter-spacing: 6px;
+        .title {
+            font-family: 'Orbitron'; font-size: 4rem; letter-spacing: 15px;
+            color: var(--neon); text-shadow: 0 0 20px var(--neon); margin-bottom: 10px;
+        }
+
+        .identity {
+            font-size: 1.1rem; color: var(--gold); letter-spacing: 5px;
             margin-bottom: 30px; border-bottom: 1px solid var(--gold);
-            display: inline-block; padding-bottom: 5px;
+            display: inline-block; padding-bottom: 10px;
         }
 
-        #log {
-            font-size: 0.75rem; color: #666; text-align: left;
-            height: 90px; overflow: hidden; margin-bottom: 30px;
-            line-height: 1.5; border-left: 1px solid #222; padding-left: 15px;
+        #system-log {
+            font-size: 0.8rem; color: #555; text-align: left; height: 120px;
+            overflow: hidden; line-height: 1.6; margin-bottom: 30px;
+            border-left: 2px solid #111; padding-left: 20px;
         }
 
-        .nexus-btn {
-            background: transparent; border: 1px solid var(--neon);
-            color: var(--neon); padding: 20px 50px; font-family: 'Orbitron', sans-serif;
-            font-size: 1rem; letter-spacing: 6px; transition: 0.4s; cursor: pointer;
+        /* BUTTONS */
+        .action-btn {
+            background: transparent; border: 1px solid var(--gold); color: var(--gold);
+            padding: 15px 40px; font-family: 'Orbitron'; letter-spacing: 5px;
+            cursor: pointer; transition: 0.3s;
         }
+        .action-btn:hover { background: var(--gold); color: black; box-shadow: 0 0 30px var(--gold); }
 
-        .nexus-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 30px var(--neon); }
-
+        /* VAULT MODAL */
         #vault {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 999;
-            flex-direction: column; align-items: center; justify-content: center;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            z-index: 6000; align-items: center; justify-content: center;
         }
-
-        .terminal-box { border: 1px solid var(--gold); padding: 50px; width: 400px; background: #000; text-align: center; }
+        .lock-box { border: 1px solid var(--neon); padding: 50px; background: black; text-align: center; }
         input {
-            background: transparent; border: none; border-bottom: 2px solid var(--gold);
-            color: var(--gold); width: 100%; padding: 15px; text-align: center;
-            font-size: 1.2rem; outline: none; font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 25px;
+            background: transparent; border: none; border-bottom: 2px solid var(--neon);
+            color: var(--neon); width: 100%; padding: 10px; text-align: center;
+            font-size: 1.5rem; outline: none; margin-bottom: 30px; letter-spacing: 5px;
         }
     </style>
 </head>
 <body>
 
-<div id="boot-screen">
-    <h2 style="color: var(--
+<canvas id="stars-canvas"></canvas>
+
+<div id="boot-layer">
+    <div style="color: white; font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 20px;">SYSTEM STATUS: STANDBY</div>
+    <button class="boot-btn" onclick="initializeOS()">BOOT DREAM SPACE</button>
+</div>
+
+<div class="container" id="main-ui">
+    <div class="hud-frame" id="hud">
+        <h1 class="title">DREAM SPACE</h1>
+        <div class="identity">CREATOR: SUMUKHA S.</div>
+        
+        <div id="system-log"></div>
+
+        <div style="margin-top: 20px;">
+            <button class="action-btn" onclick="openVault()">ACCESS MY AI</button>
+        </div>
+
+        <p style="margin-top: 40px; color: #333; font-size: 0.7rem; text-align: left;">
+            PROFILE: 7th Class Student at Shree Swaminarayan Gurukul. <br>
+            Objective: Neural Engineering & AI Architecture.
+        </p>
+    </div>
+</div>
+
+<div id="vault">
+    <div class="lock-box">
+        <h2 style="color:var(--neon); letter-spacing:5px; margin-bottom:30px;">IDENTITY CHECK</h2>
+        <input type="password" id="passCode" placeholder="••••••••">
+        <br>
+        <button class="action-btn" onclick="verify()">AUTHORIZE</button>
+        <p onclick="closeVault()" style="color:#333; margin-top:30px; cursor:pointer; font-size:0.7rem;">TERMINATE</p>
+    </div>
+</div>
+
+<script>
+    const logLines = [
+        "> Booting DreamSpace_Kernel_7.0...",
+        "> Syncing with S.S. Gurukul Educational Core...",
+        "> User identified: Sumukha S.",
+        "> Loading Gemini 3 Vision Protocols...",
+        "> 3D Neural Environment: READY",
+        "> Security Wall: ACTIVE",
+        "> Welcome back, Architect."
+    ];
+
+    let audioCtx;
+    
+    function initializeOS() {
+        // Create Neural Sound (Synthesized Hum)
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.type = 'sawtooth';
+        oscillator.frequency.setValueAtTime(40, audioCtx.currentTime); 
+        gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+
+        // Reveal UI
+        document.getElementById('boot-layer').style.display = 'none';
+        document.getElementById('main-ui').style.opacity = '1';
+        
+        // Start System Log
+        let i = 0;
+        const log = document.getElementById('system-log');
+        const interval = setInterval(() => {
+            if(i < logLines.length) {
+                log.innerHTML += logLines[i] + "<br>";
+                i++;
+            } else { clearInterval(interval); }
+        }, 800);
+    }
+
+    // STARFIELD ENGINE
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let stars = [];
+
+    for(let i=0; i<150; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 1.5,
+            v: Math.random() * 0.5
+        });
+    }
+
+    function drawStars() {
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(0, 242, 255, 0.5)";
+        stars.forEach(s => {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+            ctx.fill();
+            s.y -= s.v;
+            if(s.y < 0) s.y = canvas.height;
+        });
+        requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    // 3D TILT
+    const hud = document.getElementById('hud');
+    document.addEventListener('mousemove', (e) => {
+        const x = (window.innerWidth / 2 - e.pageX) / 35;
+        const y = (window.innerHeight / 2 - e.pageY) / 35;
+        hud.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+
+    // SECURITY
+    function openVault() { document.getElementById('vault').style.display = 'flex'; }
+    function closeVault() { document.getElementById('vault').style.display = 'none'; }
+    function verify() {
+        const input = document.getElementById('passCode').value;
+        if (input === "DreamSpaceSumukha3036") {
+            window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
+        } else {
+            alert("ACCESS DENIED: KEY INCORRECT");
+        }
+    }
+</script>
+
+</body>
+</html>
