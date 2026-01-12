@@ -3,170 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Space AI | Neural Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>Dream Space AI | Sumukha S. Official</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@200;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon: #00f2ff;
             --gold: #D4AF37;
-            --bg: #020202;
-            --terminal-green: #00ff41;
+            --bg: #010101;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(0, 242, 255, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; background: var(--bg); color: white; font-family: 'Orbitron', sans-serif; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        body, html { height: 100%; background: var(--bg); color: white; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
 
-        /* NEURAL GRID BACKGROUND */
-        .grid-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            perspective: 1000px; z-index: -1;
+        /* REACTIVE BACKGROUND */
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 20%, black 100%); pointer-events: none; }
+
+        .container { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; padding: 40px; text-align: center;
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 60px 20px; text-align: center; }
-
-        /* LIVE SCANNING TEXT */
-        .decipher {
-            font-size: 3.5rem; letter-spacing: 12px; color: var(--neon);
-            text-transform: uppercase; margin-bottom: 5px;
-            text-shadow: 0 0 15px var(--neon);
+        /* FLOATING HUD INTERFACE */
+        .hud-frame {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 2px;
+            position: relative;
+            max-width: 800px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
-        .sub-decipher {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem; color: var(--gold); letter-spacing: 4px;
-            margin-bottom: 40px; opacity: 0.8;
+        .hud-frame::before {
+            content: "SYSTEM_ACTIVE"; position: absolute; top: -10px; left: 20px;
+            background: var(--bg); padding: 0 10px; font-size: 0.6rem; color: var(--neon); letter-spacing: 3px;
         }
 
-        /* BIO CONTAINER */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(0, 242, 255, 0.1);
-            padding: 35px; border-radius: 5px;
-            backdrop-filter: blur(15px); margin-bottom: 40px;
+        /* GLITCH TITLE */
+        .glitch-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem; font-weight: 900; letter-spacing: 15px;
+            color: var(--neon); text-transform: uppercase;
+            position: relative; margin-bottom: 10px;
+        }
+
+        .glitch-title:after {
+            content: "DREAM SPACE AI"; position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; color: var(--gold);
+            opacity: 0.1; transform: translate(4px, 4px);
+        }
+
+        .sumukha-identity {
+            font-size: 1.2rem; color: var(--gold); letter-spacing: 6px;
+            margin-bottom: 30px; border-bottom: 1px solid var(--gold);
+            display: inline-block; padding-bottom: 5px;
+        }
+
+        /* LIVE SYSTEM LOG */
+        #log {
+            font-size: 0.8rem; color: #666; text-align: left;
+            height: 100px; overflow: hidden; margin-bottom: 30px;
+            line-height: 1.5; border-left: 1px solid #222; padding-left: 15px;
+        }
+
+        /* NEURAL PULSE BUTTON */
+        .nexus-btn {
+            background: transparent; border: 1px solid var(--neon);
+            color: var(--neon); padding: 25px 60px; font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem; letter-spacing: 8px; transition: 0.4s;
             position: relative; overflow: hidden;
         }
 
-        .glass-panel::before {
-            content: ""; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--neon), transparent);
-            animation: scanline 4s linear infinite;
+        .nexus-btn:hover {
+            background: var(--neon); color: black;
+            box-shadow: 0 0 50px var(--neon);
+            letter-spacing: 12px;
         }
 
-        @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
-
-        .bio-text {
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.8; color: #aaa; text-align: left; font-size: 0.95rem;
-        }
-
-        /* HUD STATS */
-        .hud-display {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 40px;
-        }
-        .hud-stat { border: 1px solid #222; padding: 15px; border-radius: 4px; }
-        .hud-stat label { display: block; font-size: 0.6rem; color: #555; letter-spacing: 2px; margin-bottom: 5px; }
-        .hud-stat span { color: var(--neon); font-size: 0.9rem; }
-
-        /* HAPTIC PORTAL BUTTON */
-        .portal-btn {
-            background: transparent; border: 1px solid var(--neon);
-            color: var(--neon); padding: 20px 60px; font-size: 1.1rem;
-            letter-spacing: 5px; cursor: pointer; position: relative;
-            transition: 0.3s; overflow: hidden;
-        }
-        .portal-btn:hover {
-            background: var(--neon); color: black; box-shadow: 0 0 40px var(--neon);
-        }
-
-        /* PASSWORD MODAL */
-        #auth-overlay {
+        /* SECURE OVERRIDE MODAL */
+        #vault {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 100;
+            background: rgba(0,0,0,0.98); z-index: 999;
             flex-direction: column; align-items: center; justify-content: center;
         }
-        .terminal-input {
-            background: transparent; border: 1px solid var(--gold);
-            color: var(--gold); padding: 15px; width: 300px;
-            text-align: center; font-size: 1.5rem; outline: none;
-            font-family: 'JetBrains Mono', monospace;
+
+        .terminal-box { border: 1px solid var(--gold); padding: 60px; width: 450px; background: #000; }
+        input {
+            background: transparent; border: none; border-bottom: 2px solid var(--gold);
+            color: var(--gold); width: 100%; padding: 15px; text-align: center;
+            font-size: 1.5rem; outline: none; font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
 
-<div class="grid-bg"></div>
+<canvas id="canvas-bg"></canvas>
+<div class="vignette"></div>
 
 <div class="container">
-    <div id="matrix-title" class="decipher">DREAM SPACE</div>
-    <div class="sub-decipher">> NEURAL_LINK_ESTABLISHED_2026</div>
+    <div class="hud-frame" id="hud">
+        <h1 class="glitch-title" id="title">DREAM SPACE</h1>
+        <div class="sumukha-identity">ARCHITECT: SUMUKHA S.</div>
+        
+        <div id="log"></div>
 
-    <div class="glass-panel">
-        <div class="bio-text" id="typewriter">
-            // AUTHOR: Sumukha S.<br>
-            // CLEARANCE: Level 7 Architect<br>
-            // INSTITUTION: Shree Swaminarayan Gurukul<br><br>
-            Initializing reasoning protocol... My mission is to merge human intelligence with the Gemini 3 Flash engine. 
-            Welcome to the command center of a 7th Class visionary.
-        </div>
+        <button class="nexus-btn" onclick="openVault()">ACCESS NEURAL CORE</button>
     </div>
-
-    <div class="hud-display">
-        <div class="hud-stat"><label>LATENCY</label><span id="ping">24ms</span></div>
-        <div class="hud-stat"><label>UPLOADER</label><span>SUMUKHA S.</span></div>
-        <div class="hud-stat"><label>STATUS</label><span style="color:var(--terminal-green)">ONLINE</span></div>
-    </div>
-
-    <button class="portal-btn" onclick="openTerminal()">INITIALIZE AI</button>
 </div>
 
-<div id="auth-overlay">
-    <h2 style="color: var(--gold); letter-spacing: 8px; margin-bottom: 20px;">SECURITY KEY REQUIRED</h2>
-    <input type="password" id="passCode" class="terminal-input" placeholder="ACCESS KEY">
-    <div style="margin-top: 30px;">
-        <button class="portal-btn" style="border-color: var(--gold); color: var(--gold); padding: 10px 30px;" onclick="verify()">AUTHORIZE</button>
-        <p onclick="closeTerminal()" style="color: #444; margin-top: 20px; cursor: pointer; font-size: 0.8rem;">ABORT_SIGNAL</p>
+<div id="vault">
+    <div class="terminal-box">
+        <h3 style="color:var(--gold); letter-spacing:5px; margin-bottom:10px;">ENCRYPTION KEY REQUIRED</h3>
+        <p style="color:#333; font-size:0.7rem; margin-bottom:40px;">SUMUKHA_S // CLASS_7 // S.S_GURUKUL</p>
+        <input type="password" id="passCode" placeholder="SECRET_CODE">
+        <br>
+        <button class="nexus-btn" style="border-color:var(--gold); color:var(--gold); font-size:0.8rem;" onclick="verify()">AUTHORIZE</button>
+        <p onclick="closeVault()" style="color:#222; margin-top:30px; cursor:pointer;">ABORT_LINK</p>
     </div>
 </div>
 
 <script>
-    // Live Matrix Decipher Effect
-    function decipherEffect(element, originalText) {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
-        let iterations = 0;
-        const interval = setInterval(() => {
-            element.innerText = originalText.split("").map((char, index) => {
-                if(index < iterations) return originalText[index];
-                return chars[Math.floor(Math.random() * chars.length)];
-            }).join("");
-            if(iterations >= originalText.length) clearInterval(interval);
-            iterations += 1/3;
-        }, 30);
+    // 1. DYNAMIC SYSTEM LOG
+    const logLines = [
+        "> Initializing Sumukha_OS...",
+        "> Locating Shree Swaminarayan Gurukul Servers...",
+        "> Syncing Class 7 Neural Protocols...",
+        "> Loading Gemini 3 Flash Flash Vision...",
+        "> 3D Architect: Online",
+        "> Music Synthesizer: Standby",
+        "> System Integrity: 100%",
+        "> Welcome back, Sumukha S."
+    ];
+    let lineIdx = 0;
+    function typeLog() {
+        if(lineIdx < logLines.length) {
+            document.getElementById('log').innerHTML += logLines[lineIdx] + "<br>";
+            lineIdx++;
+            setTimeout(typeLog, 800);
+        }
+    }
+    typeLog();
+
+    // 2. PARTICLE BACKGROUND
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.speedY = Math.random() * 1 - 0.5;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if(this.x > canvas.width) this.x = 0;
+            if(this.x < 0) this.x = canvas.width;
+            if(this.y > canvas.height) this.y = 0;
+            if(this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+            ctx.fillStyle = 'rgba(0, 242, 255, 0.3)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
-    window.onload = () => {
-        decipherEffect(document.getElementById('matrix-title'), "DREAM SPACE");
-    };
+    function init() {
+        for(let i = 0; i < 100; i++) particles.push(new Particle());
+    }
+    function animate() {
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    init(); animate();
 
-    // Live Ping Simulation
-    setInterval(() => {
-        document.getElementById('ping').innerText = Math.floor(Math.random() * (40 - 15) + 15) + "ms";
-    }, 2000);
-
-    function openTerminal() { document.getElementById('auth-overlay').style.display = 'flex'; }
-    function closeTerminal() { document.getElementById('auth-overlay').style.display = 'none'; }
-
+    // 3. SECURITY
+    function openVault() { document.getElementById('vault').style.display = 'flex'; }
+    function closeVault() { document.getElementById('vault').style.display = 'none'; }
     function verify() {
         const input = document.getElementById('passCode').value;
         if (input === "DreamSpaceSumukha3036") {
             window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
         } else {
-            alert("SECURITY VIOLATION: KEY INCORRECT");
-            document.getElementById('passCode').value = "";
+            alert("BIOMETRIC ERROR: ACCESS DENIED");
         }
     }
+
+    // 4. MOUSE TILT EFFECT
+    const hud = document.getElementById('hud');
+    document.addEventListener('mousemove', (e) => {
+        let x = (window.innerWidth / 2 - e.pageX) / 25;
+        let y = (window.innerHeight / 2 - e.pageY) / 25;
+        hud.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
 </script>
 
 </body>
