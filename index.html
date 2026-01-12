@@ -17,201 +17,70 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
         body, html { height: 100%; background: var(--bg); color: white; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
 
-        /* REACTIVE BACKGROUND */
+        /* INTRO OVERLAY */
+        #boot-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2000; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+
         #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 20%, black 100%); pointer-events: none; }
 
         .container { 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; padding: 40px; text-align: center;
+            height: 100vh; padding: 40px; text-align: center; opacity: 0; transition: 2s;
         }
 
-        /* FLOATING HUD INTERFACE */
         .hud-frame {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            padding: 50px;
-            border-radius: 2px;
-            position: relative;
-            max-width: 800px;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            background: var(--glass); border: 1px solid var(--border);
+            backdrop-filter: blur(20px); padding: 50px; border-radius: 2px;
+            position: relative; max-width: 800px; transform-style: preserve-3d;
+            perspective: 1000px; box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
-        .hud-frame::before {
-            content: "SYSTEM_ACTIVE"; position: absolute; top: -10px; left: 20px;
-            background: var(--bg); padding: 0 10px; font-size: 0.6rem; color: var(--neon); letter-spacing: 3px;
-        }
-
-        /* GLITCH TITLE */
         .glitch-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem; font-weight: 900; letter-spacing: 15px;
-            color: var(--neon); text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif; font-size: 3.5rem; font-weight: 900; 
+            letter-spacing: 12px; color: var(--neon); text-transform: uppercase;
             position: relative; margin-bottom: 10px;
         }
 
-        .glitch-title:after {
-            content: "DREAM SPACE AI"; position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; color: var(--gold);
-            opacity: 0.1; transform: translate(4px, 4px);
-        }
-
         .sumukha-identity {
-            font-size: 1.2rem; color: var(--gold); letter-spacing: 6px;
+            font-size: 1rem; color: var(--gold); letter-spacing: 6px;
             margin-bottom: 30px; border-bottom: 1px solid var(--gold);
             display: inline-block; padding-bottom: 5px;
         }
 
-        /* LIVE SYSTEM LOG */
         #log {
-            font-size: 0.8rem; color: #666; text-align: left;
-            height: 100px; overflow: hidden; margin-bottom: 30px;
+            font-size: 0.75rem; color: #666; text-align: left;
+            height: 90px; overflow: hidden; margin-bottom: 30px;
             line-height: 1.5; border-left: 1px solid #222; padding-left: 15px;
         }
 
-        /* NEURAL PULSE BUTTON */
         .nexus-btn {
             background: transparent; border: 1px solid var(--neon);
-            color: var(--neon); padding: 25px 60px; font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem; letter-spacing: 8px; transition: 0.4s;
-            position: relative; overflow: hidden;
+            color: var(--neon); padding: 20px 50px; font-family: 'Orbitron', sans-serif;
+            font-size: 1rem; letter-spacing: 6px; transition: 0.4s; cursor: pointer;
         }
 
-        .nexus-btn:hover {
-            background: var(--neon); color: black;
-            box-shadow: 0 0 50px var(--neon);
-            letter-spacing: 12px;
-        }
+        .nexus-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 30px var(--neon); }
 
-        /* SECURE OVERRIDE MODAL */
         #vault {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 999;
             flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .terminal-box { border: 1px solid var(--gold); padding: 60px; width: 450px; background: #000; }
+        .terminal-box { border: 1px solid var(--gold); padding: 50px; width: 400px; background: #000; text-align: center; }
         input {
             background: transparent; border: none; border-bottom: 2px solid var(--gold);
             color: var(--gold); width: 100%; padding: 15px; text-align: center;
-            font-size: 1.5rem; outline: none; font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 30px;
+            font-size: 1.2rem; outline: none; font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 25px;
         }
     </style>
 </head>
 <body>
 
-<canvas id="canvas-bg"></canvas>
-<div class="vignette"></div>
-
-<div class="container">
-    <div class="hud-frame" id="hud">
-        <h1 class="glitch-title" id="title">DREAM SPACE</h1>
-        <div class="sumukha-identity">ARCHITECT: SUMUKHA S.</div>
-        
-        <div id="log"></div>
-
-        <button class="nexus-btn" onclick="openVault()">ACCESS NEURAL CORE</button>
-    </div>
-</div>
-
-<div id="vault">
-    <div class="terminal-box">
-        <h3 style="color:var(--gold); letter-spacing:5px; margin-bottom:10px;">ENCRYPTION KEY REQUIRED</h3>
-        <p style="color:#333; font-size:0.7rem; margin-bottom:40px;">SUMUKHA_S // CLASS_7 // S.S_GURUKUL</p>
-        <input type="password" id="passCode" placeholder="SECRET_CODE">
-        <br>
-        <button class="nexus-btn" style="border-color:var(--gold); color:var(--gold); font-size:0.8rem;" onclick="verify()">AUTHORIZE</button>
-        <p onclick="closeVault()" style="color:#222; margin-top:30px; cursor:pointer;">ABORT_LINK</p>
-    </div>
-</div>
-
-<script>
-    // 1. DYNAMIC SYSTEM LOG
-    const logLines = [
-        "> Initializing Sumukha_OS...",
-        "> Locating Shree Swaminarayan Gurukul Servers...",
-        "> Syncing Class 7 Neural Protocols...",
-        "> Loading Gemini 3 Flash Flash Vision...",
-        "> 3D Architect: Online",
-        "> Music Synthesizer: Standby",
-        "> System Integrity: 100%",
-        "> Welcome back, Sumukha S."
-    ];
-    let lineIdx = 0;
-    function typeLog() {
-        if(lineIdx < logLines.length) {
-            document.getElementById('log').innerHTML += logLines[lineIdx] + "<br>";
-            lineIdx++;
-            setTimeout(typeLog, 800);
-        }
-    }
-    typeLog();
-
-    // 2. PARTICLE BACKGROUND
-    const canvas = document.getElementById('canvas-bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2;
-            this.speedX = Math.random() * 1 - 0.5;
-            this.speedY = Math.random() * 1 - 0.5;
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if(this.x > canvas.width) this.x = 0;
-            if(this.x < 0) this.x = canvas.width;
-            if(this.y > canvas.height) this.y = 0;
-            if(this.y < 0) this.y = canvas.height;
-        }
-        draw() {
-            ctx.fillStyle = 'rgba(0, 242, 255, 0.3)';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function init() {
-        for(let i = 0; i < 100; i++) particles.push(new Particle());
-    }
-    function animate() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(animate);
-    }
-    init(); animate();
-
-    // 3. SECURITY
-    function openVault() { document.getElementById('vault').style.display = 'flex'; }
-    function closeVault() { document.getElementById('vault').style.display = 'none'; }
-    function verify() {
-        const input = document.getElementById('passCode').value;
-        if (input === "DreamSpaceSumukha3036") {
-            window.location.href = "https://aistudio.google.com/app/apps/drive/1kIszFcKD2_XlwSUQBFvc7sBi2u_DshLk";
-        } else {
-            alert("BIOMETRIC ERROR: ACCESS DENIED");
-        }
-    }
-
-    // 4. MOUSE TILT EFFECT
-    const hud = document.getElementById('hud');
-    document.addEventListener('mousemove', (e) => {
-        let x = (window.innerWidth / 2 - e.pageX) / 25;
-        let y = (window.innerHeight / 2 - e.pageY) / 25;
-        hud.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-    });
-</script>
-
-</body>
-</html>
+<div id="boot-screen">
+    <h2 style="color: var(--
